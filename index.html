@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chai Sutta — Asli Tapri Wali Chai</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Teko:wght@400;600;700&family=Baloo+2:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --brown: #3B1F0B;
+    --orange: #D4731A;
+    --cream: #FFF5E1;
+    --dark: #1E0D03;
+    --mid: #5C3215;
+    --orange-light: #E8924A;
+    --orange-dim: #A3561A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--brown);
+    color: var(--cream);
+    font-family: 'Baloo 2', cursive;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+  }
+
+  /* ====== NAV ====== */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--dark);
+    border-bottom: 2px solid var(--orange);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: 1.6rem;
+    color: var(--orange);
+    letter-spacing: 2px;
+    text-decoration: none;
+  }
+
+  .nav-logo span {
+    color: var(--cream);
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav ul a {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s, color 0.2s;
+  }
+
+  nav ul a:hover {
+    color: var(--orange);
+    opacity: 1;
+  }
+
+  /* ====== HERO ====== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    overflow: hidden;
+  }
+
+  /* Steam animation behind text */
+  .steam-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.08;
+  }
+
+  .steam-bg svg {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  @keyframes steam-rise {
+    0% { transform: translateY(0) scaleX(1); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translateY(-120px) scaleX(1.4); opacity: 0; }
+  }
+
+  .steam-path { animation: steam-rise 5s ease-in-out infinite; }
+  .steam-path:nth-child(2) { animation-delay: 1.5s; }
+  .steam-path:nth-child(3) { animation-delay: 3s; }
+
+  .diagonal-stripe {
+    position: absolute;
+    top: -60px; right: -80px;
+    width: 380px; height: 380px;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 18px,
+      rgba(212, 115, 26, 0.06) 18px,
+      rgba(212, 115, 26, 0.06) 36px
+    );
+    transform: rotate(10deg);
+    border-radius: 50%;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 860px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.75rem;
+    display: block;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: clamp(4.5rem, 14vw, 10rem);
+    line-height: 0.9;
+    color: var(--cream);
+    letter-spacing: -2px;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+
+  .hero-title .accent {
+    color: var(--orange);
+    display: block;
+  }
+
+  .hero-sub {
+    font-family: 'Teko', sans-serif;
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    font-weight: 400;
+    color: var(--cream);
+    opacity: 0.7;
+    margin-top: 1.2rem;
+    letter-spacing: 1px;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  .hero-divider {
+    width: 80px;
+    height: 3px;
+    background: var(--orange);
+    margin: 1.8rem auto;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .hero-tagline {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    opacity: 0.85;
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    animation: fadeUp 0.7s 0.35s ease both;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    font-family: 'Teko', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--brown);
+    background: var(--orange);
+    padding: 0.9rem 2.8rem;
+    text-decoration: none;
+    border: 3px solid var(--orange);
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+
+  .hero-cta:hover {
+    background: transparent;
+    color: var(--orange);
+    transform: translateY(-3px);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ====== SECTION HEADERS ====== */
+  .section-label {
+    font-family: 'Teko', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: var(--cream);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  /* ====== TAPE DIVIDER ====== */
+  .tape-divider {
+    width: 100%;
+    height: 6px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--orange) 0px, var(--orange) 30px,
+      transparent 30px, transparent 40px
+    );
+    opacity: 0.4;
+    margin: 0;
+  }
+
+  /* ====== BANNER STRIP ====== */
+  .banner-strip {
+    background: var(--orange);
+    padding: 0.7rem 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .banner-track {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee 18s linear infinite;
+  }
+
+  .banner-track span {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--brown);
+    padding: 0 2rem;
+  }
+
+  .banner-track span::before {
+    content: '◆  ';
+  }
+
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ====== MENU ====== */
+  #menu {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .menu-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .menu-card {
+    background: var(--dark);
+    border: 1.5px solid var(--mid);
+    padding: 1.8rem;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+    overflow: hidden;
+  }
+
+  .menu-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--orange);
+    transform: scaleY(0);
+    transition: transform 0.25s ease;
+    transform-origin: bottom;
+  }
+
+  .menu-card:hover {
+    border-color: var(--orange);
+    transform: translateY(-4px);
+  }
+
+  .menu-card:hover::before {
+    transform: scaleY(1);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-name {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: 1.5rem;
+    color: var(--cream);
+    line-height: 1.1;
+  }
+
+  .card-price {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 1px;
+    white-space: nowrap;
+    margin-left: 1rem;
+  }
+
+  .card-desc {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    line-height: 1.6;
+  }
+
+  .card-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    font-family: 'Teko', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+    background: rgba(212,115,26,0.12);
+    border: 1px solid rgba(212,115,26,0.3);
+    padding: 0.2rem 0.7rem;
+  }
+
+  /* ====== ABOUT ====== */
+  #about {
+    background: var(--dark);
+    padding: 5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #about::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: 40px;
+    width: 320px; height: 320px;
+    border: 40px solid rgba(212,115,26,0.06);
+    border-radius: 50%;
+  }
+
+  .about-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-text .section-title {
+    margin-bottom: 1.5rem;
+  }
+
+  .about-text p {
+    opacity: 0.8;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+  }
+
+  .about-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-left: 3px solid var(--orange);
+    padding-left: 1.2rem;
+  }
+
+  .stat-num {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: 2.8rem;
+    color: var(--orange);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'Teko', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  /* ====== VISIT ====== */
+  #visit {
+    padding: 5rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .visit-header {
+    margin-bottom: 3rem;
+  }
+
+  .visit-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  .visit-card {
+    background: var(--dark);
+    border: 1.5px solid var(--mid);
+    padding: 1.5rem;
+  }
+
+  .visit-icon {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+    display: block;
+    color: var(--orange);
+    font-family: 'Teko', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--mid);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .visit-card strong {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: block;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+
+  .visit-card p {
+    opacity: 0.7;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* ====== FOOTER ====== */
+  footer {
+    background: var(--dark);
+    border-top: 2px solid var(--orange);
+    text-align: center;
+    padding: 2.5rem 2rem;
+  }
+
+  .footer-logo {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: 2.5rem;
+    color: var(--orange);
+    letter-spacing: 3px;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-tagline {
+    font-family: 'Teko', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  /* ====== RESPONSIVE ====== */
+  @media (max-width: 700px) {
+    .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    nav ul { display: none; }
+    .hero-title { font-size: clamp(3.5rem, 18vw, 6rem); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Chai<span>Sutta</span></a>
+  <ul>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#about">Hamare Baare</a></li>
+    <li><a href="#visit">Aao</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="diagonal-stripe"></div>
+  <div class="steam-bg" aria-hidden="true">
+    <svg viewBox="0 0 900 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="steam-path" d="M 400 300 Q 380 220 420 150 Q 460 80 430 20" stroke="#D4731A" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path class="steam-path" d="M 450 300 Q 490 230 460 170 Q 430 110 470 50" stroke="#D4731A" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <path class="steam-path" d="M 500 300 Q 520 240 490 180 Q 460 120 510 60" stroke="#D4731A" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+  <div class="hero-inner">
+    <span class="hero-eyebrow">— Est. 2010, Guwahati —</span>
+    <h1 class="hero-title">
+      CHAI
+      <span class="accent">SUTTA</span>
+    </h1>
+    <div class="hero-sub">Asli tapri wali chai. Kuch alag nahi. Bas sahi.</div>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">Jab bhi dil bhaari ho ya koi baat karni ho — ek cutting chai aur tu set hai bhai.</p>
+    <a href="#menu" class="hero-cta">Menu Dekho</a>
+  </div>
+</section>
+
+<!-- BANNER -->
+<div class="banner-strip" aria-hidden="true">
+  <div class="banner-track">
+    <span>Asli Chai</span><span>Kadak Masala</span><span>Tapri Vibes</span><span>Dum Lagao</span>
+    <span>Chai Pe Charcha</span><span>Jugaad Life</span><span>Garam Garam</span><span>Sutta Optional</span>
+    <span>Asli Chai</span><span>Kadak Masala</span><span>Tapri Vibes</span><span>Dum Lagao</span>
+    <span>Chai Pe Charcha</span><span>Jugaad Life</span><span>Garam Garam</span><span>Sutta Optional</span>
+  </div>
+</div>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="menu-header">
+    <div class="section-label">Hamara Menu</div>
+    <h2 class="section-title">KYA PIYOGE?</h2>
+  </div>
+  <div class="menu-grid">
+
+    <div class="menu-card">
+      <div class="card-top">
+        <div class="card-name">Cutting Chai</div>
+        <div class="card-price">₹10</div>
+      </div>
+      <p class="card-desc">Half cup, full kick. The OG. Strong, milky, garam. Jo bhi aaye pehle yahi maange.</p>
+      <span class="card-tag">Best Seller</span>
+    </div>
+
+    <div class="menu-card">
+      <div class="card-top">
+        <div class="card-name">Masala Chai</div>
+        <div class="card-price">₹20</div>
+      </div>
+      <p class="card-desc">Adrak, elaichi, laung — sab kuch thoda thoda. Ek ghoonth aur dil khush.</p>
+      <span class="card-tag">Must Try</span>
+    </div>
+
+    <div class="menu-card">
+      <div class="card-top">
+        <div class="card-name">Kadak Adrak</div>
+        <div class="card-price">₹20</div>
+      </div>
+      <p class="card-desc">Bade level ka ginger chai. Thoda tund mausam ho toh yahi kaam aata hai. Warning: potent.</p>
+      <span class="card-tag">Winter Special</span>
+    </div>
+
+    <div class="menu-card">
+      <div class="card-top">
+        <div class="card-name">Elaichi Special</div>
+        <div class="card-price">₹25</div>
+      </div>
+      <p class="card-desc">Khushbu aisi ki pados wala bhi puchega. Pure cardamom, subtle sweetness, dum se bani.</p>
+      <span class="card-tag">Fragrant</span>
+    </div>
+
+    <div class="menu-card">
+      <div class="card-top">
+        <div class="card-name">Lemon Chai</div>
+        <div class="card-price">₹25</div>
+      </div>
+      <p class="card-desc">Nimbu squeeze, kala namak, garam chai. Sounds weird, tastes paisa vasool. Trust karo.</p>
+      <span class="card-tag">Tapri Signature</span>
+    </div>
+
+    <div class="menu-card">
+      <div class="card-top">
+        <div class="card-name">Irani Chai</div>
+        <div class="card-price">₹30</div>
+      </div>
+      <p class="card-desc">Malaai wali. Dense, creamy, slow. Ek cup mein ghante bhar ki feeling. Sip karo, baat karo.</p>
+      <span class="card-tag">Premium</span>
+    </div>
+
+  </div>
+</section>
+
+<div class="tape-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <div class="section-label">Hamare Baare Mein</div>
+      <h2 class="section-title">TAPRI.<br>BAS<br>TAPRI.</h2>
+      <p>Na koi fancy decor. Na WiFi password. Na overpriced latte. Sirf chai, ek maati ki kulhad, aur thodi si sardi mein garmahat.</p>
+      <p>Yahan time pass nahi hota — yahan waqt bhi thehra rehta hai. Dost mile, baatein hoi, chai piya. Zindagi sahi hai.</p>
+    </div>
+    <div class="about-visual">
+      <div class="stat-row">
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Saal Se<br>Chal Rahe Hain</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Cups Roz<br>Bante Hain</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Tapri.<br>No Branches.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="tape-divider"></div>
+
+<!-- VISIT -->
+<section id="visit">
+  <div class="visit-header">
+    <div class="section-label">Dhundho Hame</div>
+    <h2 class="section-title">AA JAO.</h2>
+  </div>
+  <div class="visit-cards">
+    <div class="visit-card">
+      <span class="visit-icon">Kahan Hai</span>
+      <strong>Paltan Bazaar</strong>
+      <p>Near old clock tower. Woh chota sa thela — dhoondh lo, wahan hi milenge.</p>
+    </div>
+    <div class="visit-card">
+      <span class="visit-icon">Timing</span>
+      <strong>6 AM – 11 PM</strong>
+      <p>Roz. Sundays bhi. Holidays bhi. Chai rukti nahi.</p>
+    </div>
+    <div class="visit-card">
+      <span class="visit-icon">Order Karo</span>
+      <strong>Seedha Aao</strong>
+      <p>No Zomato. No Swiggy. Asli chai ghar tak nahi aati — aana padta hai.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">CHAI SUTTA</span>
+  <p class="footer-tagline">Asli Tapri. Asli Chai. Asli Log.</p>
+</footer>
+
+</body>
+                     </html>
